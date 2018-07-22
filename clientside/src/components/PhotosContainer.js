@@ -52,7 +52,18 @@ class PhotosContainer extends Component{
     const photos = update(this.state.photos, {
       [photoIndex]: { $set: photo }
     })
-    this.setState({photos:photos})
+    this.setState({
+      photos: photos,
+      notification: 'Changes Saved'
+    })
+  }
+
+  resetNotification = () => {
+    this.setState({notification: ''})
+  }
+
+  resetEditingId = () => {
+    this.setState({editingPhotoId: ''})
   }
 
 
@@ -70,7 +81,9 @@ class PhotosContainer extends Component{
         {this.state.photos.map((photo) => {
           if(this.state.editingPhotoId === photo.id) {
             return(<PhotoForm photo={photo} key={photo.id}
-                      updatePhoto={this.updatePhoto.bind(this)}/>)
+                      updatePhoto={this.updatePhoto.bind(this)}
+                      resetNotification={this.resetNotification.bind(this)}
+                      resetEditingId={this.resetEditingId.bind(this)}/>)
           } else {
             return(<Photo photo={photo} key={photo.id}/>)
           }

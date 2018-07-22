@@ -11,10 +11,11 @@ class PhotoForm extends Component {
   }
 
   handleInput = (e) => {
+    this.props.resetNotification()
     this.setState({[e.target.name]: e.target.value})
   }
 
-  handleBlur = () => {
+  handleSave = () => {
     const photo = {
       url: this.state.url,
       desc: this.state.desc
@@ -28,6 +29,7 @@ class PhotoForm extends Component {
     .then(res => {
       console.log(res)
       this.props.updatePhoto(res.data)
+      this.props.resetEditingId()
     })
     .catch(err => console.log(err))
   }
@@ -35,13 +37,16 @@ class PhotoForm extends Component {
   render(){
     return(
       <div className='tile'>
-        <form onBlur={this.handleBlur.bind(this)}>
+        <form>
           <input className='input' type='text'
             name='url' placeholder='Enter Photo Url'
             value={this.state.url} onChange={this.handleInput.bind(this)}/>
           <textarea className='input' name='desc'
             placeholder='Enter Photo Description'
             value={this.state.desc} onChange={this.handleInput.bind(this)}></textarea>
+          <button onClick={this.handleSave.bind(this)}>
+            Save
+          </button>
         </form>
       </div>
     );
