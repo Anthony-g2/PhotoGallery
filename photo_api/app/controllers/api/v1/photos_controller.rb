@@ -12,6 +12,12 @@ module Api::V1
       render json: @photo
     end
 
+    def update
+      @photo = Photo.find(params[:id])
+      @photo.update_attributes(photo_params)
+      render json: @photo
+    end
+
     private
 
       def photo_params

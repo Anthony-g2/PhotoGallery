@@ -3,12 +3,15 @@ import axios from 'axios'
 import Photo from './Photo'
 import update from 'immutability-helper'
 
+import PhotoForm from './PhotoForm'
+
 class PhotosContainer extends Component{
   constructor(props){
     super(props)
     this.state = {
       photos: [],
-      editingPhotoId: null
+      editingPhotoId: null,
+      notification: ''
     }
   }
 
@@ -44,6 +47,14 @@ class PhotosContainer extends Component{
     .catch(err => console.log(err))
   }
 
+  updatePhoto = (photo) => {
+    const photoIndex = this.state.photos.findIndex(x => x.id === photo.id)
+    const photos = update(this.state.photos, {
+      [photoIndex]: { $set: photo }
+    })
+    this.setState({photos:photos})
+  }
+
 
   render() {
     return (
@@ -52,9 +63,17 @@ class PhotosContainer extends Component{
           onClick={this.addNewPhoto.bind(this)} >
           New Photo
         </button>
+        <span className="notification">
+          {this.state.notification}
+        </span>
         <br />
         {this.state.photos.map((photo) => {
-          return(<Photo photo={photo} key={photo.id}/>)
+          if(this.state.editingPhotoId === photo.id) {
+            return(<PhotoForm photo={photo} key={photo.id}
+                      updatePhoto={this.updatePhoto.bind(this)}/>)
+          } else {
+            return(<Photo photo={photo} key={photo.id}/>)
+          }
         })}
       </div>
     )

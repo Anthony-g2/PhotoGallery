@@ -3,6 +3,7 @@ import PhotosContainer from './components/PhotosContainer'
 
 import './styles/App.css'
 import './styles/photos.css'
+import './styles/form.css'
 
 class App extends Component {
   render() {
